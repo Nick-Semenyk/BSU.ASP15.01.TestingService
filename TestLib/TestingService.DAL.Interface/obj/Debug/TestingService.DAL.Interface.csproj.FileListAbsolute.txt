@@ -1,0 +1,5 @@
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL.Interface\bin\Debug\TestingService.DAL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL.Interface\bin\Debug\TestingService.DAL.Interface.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL.Interface\obj\Debug\TestingService.DAL.Interface.csprojResolveAssemblyReference.cache
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL.Interface\obj\Debug\TestingService.DAL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL.Interface\obj\Debug\TestingService.DAL.Interface.pdb

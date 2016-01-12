@@ -1,0 +1,15 @@
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.BLL.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.BLL.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.BLL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.DAL.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.DAL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\EntityFramework.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.ORM.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.BLL.Interface.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.DAL.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.DAL.Interface.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\EntityFramework.xml
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\bin\Debug\TestingService.ORM.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\obj\Debug\TestingService.BLL.csprojResolveAssemblyReference.cache
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\obj\Debug\TestingService.BLL.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL\obj\Debug\TestingService.BLL.pdb

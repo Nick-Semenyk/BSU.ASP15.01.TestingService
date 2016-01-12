@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestServiceDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Answers">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="QuestionId" Type="Int32" Nullable="false" />
+    <Property Name="AnswerValue" Type="Int32" />
+    <Property Name="AnswerStructure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Questions" Relationship="Self.FK_Answers_Questions" FromRole="Answers" ToRole="Questions" />
+  </EntityType>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TestId" Type="Int32" Nullable="false" />
+    <Property Name="QuestionStructure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="QuestionNumberInTest" Type="Int32" />
+    <NavigationProperty Name="Answers" Relationship="Self.FK_Answers_Questions" FromRole="Questions" ToRole="Answers" />
+    <NavigationProperty Name="UsersAnswers" Relationship="Self.FK_UsersAnswers_Questions" FromRole="Questions" ToRole="UsersAnswers" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.UsersRoles" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Tests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="AuthorId" Type="Int32" Nullable="false" />
+    <Property Name="GlobalAvailability" Type="Boolean" Nullable="false" />
+    <Property Name="Anonymous" Type="Boolean" Nullable="false" />
+    <Property Name="Interview" Type="Boolean" Nullable="false" />
+    <Property Name="AllowedTime" Type="Int32" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="QuestionCount" Type="Int32" Nullable="false" />
+    <Property Name="RequiredQuestionCount" Type="Int32" />
+    <NavigationProperty Name="UsersTests" Relationship="Self.FK_UsersTests_Tests" FromRole="Tests" ToRole="UsersTests" />
+    <NavigationProperty Name="CoAuthors" Relationship="Self.TestsCoauthors" FromRole="Tests" ToRole="Users" />
+    <NavigationProperty Name="AllowedUsers" Relationship="Self.UsersAllowedTests" FromRole="Tests" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SecondName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ThirdName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="UsersTests" Relationship="Self.FK_UsersTests_Users" FromRole="Users" ToRole="UsersTests" />
+    <NavigationProperty Name="CoAuthoredTests" Relationship="Self.TestsCoauthors" FromRole="Users" ToRole="Tests" />
+    <NavigationProperty Name="AllowedTests" Relationship="Self.UsersAllowedTests" FromRole="Users" ToRole="Tests" />
+    <NavigationProperty Name="Roles" Relationship="Self.UsersRoles" FromRole="Users" ToRole="Roles" />
+  </EntityType>
+  <EntityType Name="UsersAnswers">
+    <Key>
+      <PropertyRef Name="UsersTestId" />
+      <PropertyRef Name="QuestionId" />
+      <PropertyRef Name="BeginningTime" />
+    </Key>
+    <Property Name="UsersTestId" Type="Int32" Nullable="false" />
+    <Property Name="QuestionId" Type="Int32" Nullable="false" />
+    <Property Name="BeginningTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndingTime" Type="DateTime" Precision="3" />
+    <Property Name="AnswerStructure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Questions" Relationship="Self.FK_UsersAnswers_Questions" FromRole="UsersAnswers" ToRole="Questions" />
+    <NavigationProperty Name="UsersTests" Relationship="Self.FK_UsersAnswers_UsersTests" FromRole="UsersAnswers" ToRole="UsersTests" />
+  </EntityType>
+  <EntityType Name="UsersTests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="TestId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="BeginningTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndingTime" Type="DateTime" Precision="3" />
+    <Property Name="RightAnswersCount" Type="Int32" />
+    <Property Name="MarkForTest" Type="Int32" />
+    <NavigationProperty Name="Tests" Relationship="Self.FK_UsersTests_Tests" FromRole="UsersTests" ToRole="Tests" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_UsersTests_Users" FromRole="UsersTests" ToRole="Users" />
+    <NavigationProperty Name="UsersAnswers" Relationship="Self.FK_UsersAnswers_UsersTests" FromRole="UsersTests" ToRole="UsersAnswers" />
+  </EntityType>
+  <Association Name="FK_Answers_Questions">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAnswers_Questions">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="UsersAnswers" Type="Self.UsersAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAnswers">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersTests_Tests">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="1" />
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersTests">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersTests_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersTests">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAnswers_UsersTests">
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="1" />
+    <End Role="UsersAnswers" Type="Self.UsersAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsersTests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAnswers">
+        <PropertyRef Name="UsersTestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TestsCoauthors">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="*" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+  </Association>
+  <Association Name="UsersAllowedTests">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="*" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+  </Association>
+  <Association Name="UsersRoles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="*" />
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="TestServiceDatabaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Answers" EntityType="Self.Answers" />
+    <EntitySet Name="Questions" EntityType="Self.Questions" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Tests" EntityType="Self.Tests" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="UsersAnswers" EntityType="Self.UsersAnswers" />
+    <EntitySet Name="UsersTests" EntityType="Self.UsersTests" />
+    <AssociationSet Name="FK_Answers_Questions" Association="Self.FK_Answers_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAnswers_Questions" Association="Self.FK_UsersAnswers_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="UsersAnswers" EntitySet="UsersAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTests_Tests" Association="Self.FK_UsersTests_Tests">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="UsersTests" EntitySet="UsersTests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTests_Users" Association="Self.FK_UsersTests_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersTests" EntitySet="UsersTests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAnswers_UsersTests" Association="Self.FK_UsersAnswers_UsersTests">
+      <End Role="UsersTests" EntitySet="UsersTests" />
+      <End Role="UsersAnswers" EntitySet="UsersAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="TestsCoauthors" Association="Self.TestsCoauthors">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="UsersAllowedTests" Association="Self.UsersAllowedTests">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="UsersRoles" Association="Self.UsersRoles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TestServiceDatabaseModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TestServiceDatabaseModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>

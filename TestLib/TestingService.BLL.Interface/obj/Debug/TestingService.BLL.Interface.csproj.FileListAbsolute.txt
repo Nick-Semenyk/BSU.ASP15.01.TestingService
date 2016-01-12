@@ -1,0 +1,5 @@
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL.Interface\bin\Debug\TestingService.BLL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL.Interface\bin\Debug\TestingService.BLL.Interface.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL.Interface\obj\Debug\TestingService.BLL.Interface.csprojResolveAssemblyReference.cache
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL.Interface\obj\Debug\TestingService.BLL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.BLL.Interface\obj\Debug\TestingService.BLL.Interface.pdb

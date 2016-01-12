@@ -1,0 +1,14 @@
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.dll.config
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\EntityFramework.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\EntityFramework.SqlServer.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.Interface.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.ORM.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\EntityFramework.xml
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\EntityFramework.SqlServer.xml
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.Interface.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.ORM.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.csprojResolveAssemblyReference.cache
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.pdb

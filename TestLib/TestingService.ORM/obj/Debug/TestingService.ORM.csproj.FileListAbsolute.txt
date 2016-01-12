@@ -1,0 +1,14 @@
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\App_Data\TestServiceDatabase.mdf
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\App_Data\TestServiceDatabase_log.ldf
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\TestServiceDatabase.mdf
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\TestServiceDatabase_log.ldf
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.dll.config
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.pdb
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\EntityFramework.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\EntityFramework.SqlServer.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\EntityFramework.xml
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\EntityFramework.SqlServer.xml
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.csprojResolveAssemblyReference.cache
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.dll
+E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.pdb

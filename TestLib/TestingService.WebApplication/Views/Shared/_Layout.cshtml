@@ -1,0 +1,48 @@
+﻿@using TestingService.WebApplication.Security
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Online Testing Service</title>
+    <link rel="stylesheet" type="text/css" href="~/Content/main.css">
+</head>
+<body>
+    <table class="table-general">
+        <tr>
+            <td class="width-percent20 text-center"><img class="width-percent100" src="/Content/comp.gif"></td>
+            <td class="text-center">
+                <h3>Online Testing Service</h3>
+            </td>
+        </tr>
+    </table>
+    <table class="table-general">
+        <tr>
+            <td class="width-percent20 text-top text-center">
+                <h4>Welcome, @(string.IsNullOrEmpty(SessionPersister.Username) ? "Guest" : SessionPersister.Username)!</h4>
+
+                @if (string.IsNullOrEmpty(SessionPersister.Username))
+                {
+                    <p>@Html.ActionLink("Login", "Login", "Account")</p>
+                }
+                else
+                {
+                    <p>@Html.ActionLink("Account", "Index", "Account")</p>
+                    <p>@Html.ActionLink("Logout", "Logout", "Account")</p>
+                }
+                <p>@Html.ActionLink("Home", "Index", "Home")</p>
+                <p>@Html.ActionLink("Search", "Index", "Search")</p>
+                @if (SessionPersister.IsInRole("admin"))
+                {
+                    <p>@Html.ActionLink("Admin functions", "Index", "AddInformation")</p>
+                    <p>@Html.ActionLink("Users list", "ViewProfile", "Account")</p>
+                }
+            </td>
+            <td class="text-top">@RenderBody()</td>
+        </tr>
+    </table>
+    @*  @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+</body>
+</html>	

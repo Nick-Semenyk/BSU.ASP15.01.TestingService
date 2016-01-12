@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TestServiceDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Answers">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="QuestionId" Type="int" Nullable="false" />
+    <Property Name="AnswerValue" Type="int" />
+    <Property Name="AnswerStructure" Type="xml" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Questions">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TestId" Type="int" Nullable="false" />
+    <Property Name="QuestionStructure" Type="xml" Nullable="false" />
+    <Property Name="QuestionNumberInTest" Type="int" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Tests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+    <Property Name="AuthorId" Type="int" Nullable="false" />
+    <Property Name="GlobalAvailability" Type="bit" Nullable="false" />
+    <Property Name="Anonymous" Type="bit" Nullable="false" />
+    <Property Name="Interview" Type="bit" Nullable="false" />
+    <Property Name="AllowedTime" Type="int" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="QuestionCount" Type="int" Nullable="false" />
+    <Property Name="RequiredQuestionCount" Type="int" />
+  </EntityType>
+  <EntityType Name="TestsCoauthors">
+    <Key>
+      <PropertyRef Name="TestId" />
+      <PropertyRef Name="CoauthorId" />
+    </Key>
+    <Property Name="TestId" Type="int" Nullable="false" />
+    <Property Name="CoauthorId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="25" Nullable="false" />
+    <Property Name="PasswordHash" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SecondName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="ThirdName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersAllowedTests">
+    <Key>
+      <PropertyRef Name="TestId" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="TestId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersAnswers">
+    <Key>
+      <PropertyRef Name="UsersTestId" />
+      <PropertyRef Name="QuestionId" />
+      <PropertyRef Name="BeginningTime" />
+    </Key>
+    <Property Name="UsersTestId" Type="int" Nullable="false" />
+    <Property Name="QuestionId" Type="int" Nullable="false" />
+    <Property Name="BeginningTime" Type="datetime" Nullable="false" />
+    <Property Name="EndingTime" Type="datetime" />
+    <Property Name="AnswerStructure" Type="xml" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UsersTests">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="TestId" Type="int" Nullable="false" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="BeginningTime" Type="datetime" Nullable="false" />
+    <Property Name="EndingTime" Type="datetime" />
+    <Property Name="RightAnswersCount" Type="int" />
+    <Property Name="MarkForTest" Type="int" />
+  </EntityType>
+  <Association Name="FK_Answers_Questions">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Answers">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TestsCoauthors_Tests">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="1" />
+    <End Role="TestsCoauthors" Type="Self.TestsCoauthors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TestsCoauthors">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TestsCoauthors_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="TestsCoauthors" Type="Self.TestsCoauthors" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="TestsCoauthors">
+        <PropertyRef Name="CoauthorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAllowedTests_Tests">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="1" />
+    <End Role="UsersAllowedTests" Type="Self.UsersAllowedTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAllowedTests">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAllowedTests_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UsersAllowedTests" Type="Self.UsersAllowedTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAllowedTests">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAnswers_Questions">
+    <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+    <End Role="UsersAnswers" Type="Self.UsersAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Questions">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAnswers">
+        <PropertyRef Name="QuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersAnswers_UsersTests">
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="1" />
+    <End Role="UsersAnswers" Type="Self.UsersAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UsersTests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersAnswers">
+        <PropertyRef Name="UsersTestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersRoles_Roles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+    <End Role="UsersRoles" Type="Self.UsersRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersRoles_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UsersRoles" Type="Self.UsersRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersTests_Tests">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="1" />
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersTests">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UsersTests_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="UsersTests" Type="Self.UsersTests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="UsersTests">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="TestServiceDatabaseModelStoreContainer">
+    <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Tests" EntityType="Self.Tests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TestsCoauthors" EntityType="Self.TestsCoauthors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersAllowedTests" EntityType="Self.UsersAllowedTests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersAnswers" EntityType="Self.UsersAnswers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersRoles" EntityType="Self.UsersRoles" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UsersTests" EntityType="Self.UsersTests" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Answers_Questions" Association="Self.FK_Answers_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="Answers" EntitySet="Answers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TestsCoauthors_Tests" Association="Self.FK_TestsCoauthors_Tests">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="TestsCoauthors" EntitySet="TestsCoauthors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TestsCoauthors_Users" Association="Self.FK_TestsCoauthors_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="TestsCoauthors" EntitySet="TestsCoauthors" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAllowedTests_Tests" Association="Self.FK_UsersAllowedTests_Tests">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="UsersAllowedTests" EntitySet="UsersAllowedTests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAllowedTests_Users" Association="Self.FK_UsersAllowedTests_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersAllowedTests" EntitySet="UsersAllowedTests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAnswers_Questions" Association="Self.FK_UsersAnswers_Questions">
+      <End Role="Questions" EntitySet="Questions" />
+      <End Role="UsersAnswers" EntitySet="UsersAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersAnswers_UsersTests" Association="Self.FK_UsersAnswers_UsersTests">
+      <End Role="UsersTests" EntitySet="UsersTests" />
+      <End Role="UsersAnswers" EntitySet="UsersAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersRoles_Roles" Association="Self.FK_UsersRoles_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="UsersRoles" EntitySet="UsersRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersRoles_Users" Association="Self.FK_UsersRoles_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersRoles" EntitySet="UsersRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTests_Tests" Association="Self.FK_UsersTests_Tests">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="UsersTests" EntitySet="UsersTests" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UsersTests_Users" Association="Self.FK_UsersTests_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UsersTests" EntitySet="UsersTests" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
