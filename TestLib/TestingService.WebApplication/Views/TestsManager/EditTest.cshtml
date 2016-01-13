@@ -1,0 +1,80 @@
+﻿@using TestingService.BLL.Interface.Entities
+@model TestEntity
+@{
+    ViewBag.Title = "Edit Test";
+}
+<h4>Test parameters</h4>
+@using (Html.BeginForm("UpdateTest", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(test => test.Id)
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Name, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AllowedTime, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.AllowedTime, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.GlobalAvailability, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.GlobalAvailability, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Anonymous, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.Anonymous, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Interview, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(m => m.Interview, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Update" />
+        </div>
+    </div>
+}
+<p>@Html.ActionLink("Coauthor managing", "CoauthorManaging", "TestsManager", new { testId = ViewBag.Test.Id }, null)</p>
+@if (!ViewBag.Test.GlobalAvailability)
+{
+    <p>@Html.ActionLink("Availability managing", "AvailabilityManaging", "TestsManager", new { testId = ViewBag.Test.Id }, null)</p>
+}
+
+<p>@Html.ActionLink("Create question", "NewQuestion", "TestsManager", new {testId = ViewBag.Test.Id}, null)</p>
+<h4>Tests questions</h4>
+<ul class="list-none">
+    @foreach (QuestionEntity t in ViewBag.Questions)
+    {
+        <li>
+            @Html.ActionLink(t.QuestionNumberInTest.ToString(), "QuestionInfo", "TestsManager", new { questionId = t.Id }, null)
+            |
+            @Html.ActionLink("Edit", "EditQuestion", "TestsManager", new { questionId = t.Id }, null)
+            |
+            @Html.ActionLink("Delete", "DeleteQuestion", "TestsManager", new { questionId = t.Id }, null)
+        </li>
+    }
+</ul>

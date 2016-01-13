@@ -1,0 +1,18 @@
+﻿@using TestingService.BLL.Interface.Entities
+
+@{
+    ViewBag.Title = "Created tests";
+}
+<h4>Users tests</h4>
+<ul class="list-none">
+    @foreach (TestEntity t in ViewBag.Tests)
+    {
+        <li>
+            @Html.ActionLink(t.Name, "TestInfo", "TestsManager", new { testId = t.Id }, null)
+            |
+            @Html.ActionLink("Edit", "EditTest", "TestsManager", new { testId = t.Id }, null)
+            |
+            @Html.ActionLink("Delete", "DeleteTest", "TestsManager", new { testId = t.Id }, null)
+        </li>
+    }
+</ul>

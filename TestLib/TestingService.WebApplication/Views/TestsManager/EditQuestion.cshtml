@@ -1,0 +1,122 @@
+﻿@model TestingService.WebApplication.Models.AnswerViewModel
+
+@{
+    ViewBag.Title = "Edit question";
+}
+
+@if (Model.QuestionType == 1)
+{
+    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.AnswerCount)
+        @Html.HiddenFor(m => m.QuestionType)
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
+            </div>
+        </div>
+        for (int i = 0; i < Model.Answers.Count(); i++)
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.CheckBoxFor(m=>m.CorrectBoolAnswers[i], new { @class = "form-control" })
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(m => m.AnswerValue, new {@class = "col-md-2 control-label"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AnswerValue, new {@class = "form-control"})
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Save" />
+            </div>
+        </div>
+    }
+}
+@if (Model.QuestionType == 2)
+{
+    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.AnswerCount)
+        @Html.HiddenFor(m => m.QuestionType)
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
+            </div>
+        </div>
+        for (int i = 0; i < Model.Answers.Count(); i++)
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.RadioButtonFor(m => m.RadioButtonNumber, i)
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(m => m.AnswerValue, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AnswerValue, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Save" />
+            </div>
+        </div>
+    }
+}
+@if (Model.QuestionType == 3)
+{
+    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.QuestionId)
+        @Html.HiddenFor(m => m.AnswerCount)
+        @Html.HiddenFor(m => m.QuestionType)
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
+            </div>
+        </div>
+        for (int i = 0; i < Model.Answers.Count(); i++)
+        {
+            <div class="form-group">
+                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.CorrectAnswers[i], new { @class = "form-control" })
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.LabelFor(m => m.AnswerValue, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.AnswerValue, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Save" />
+            </div>
+        </div>
+    }
+}
+
+

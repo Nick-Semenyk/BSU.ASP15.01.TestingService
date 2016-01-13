@@ -1,0 +1,12 @@
+﻿@model TestingService.WebApplication.Models.QuestionTestViewModel
+@{
+    ViewBag.Title = "Question info";
+}
+
+<p>@Model.Question</p>
+    @for (int i = 0; i < Model.Variants.Length; i++)
+    {
+        <p>
+            @Model.Variants[i]
+        </p>
+    }
