@@ -8,6 +8,7 @@ namespace TestingService.DAL.Interface.Repositories
     public interface IRepository<TEntity> where TEntity : IEntity
     {
         IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> GetByPredicate(Expression<Func<TEntity, bool>> f);
         TEntity GetById(int key);
         void Create(TEntity e);
         void Delete(TEntity e);

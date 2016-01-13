@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestingService.BLL.Interface.Entities;
@@ -10,6 +11,7 @@ namespace TestingService.BLL.Interface.Services
     public interface IUsersTestsService
     {
         IEnumerable<UsersTestsEntity> GetAll();
+        IEnumerable<UsersTestsEntity> GetByPredicate(Expression<Func<UsersTestsEntity, bool>> f);
         UsersTestsEntity GetById(int key);
         void AddTesting(UsersTestsEntity e);
         void DeleteTesting(UsersTestsEntity e);

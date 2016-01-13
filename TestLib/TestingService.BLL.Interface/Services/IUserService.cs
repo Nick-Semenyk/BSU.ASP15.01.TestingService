@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestingService.BLL.Interface.Entities;
@@ -11,6 +12,7 @@ namespace TestingService.BLL.Interface.Services
     {
         UserEntity GetUserEntity(int id);
         IEnumerable<UserEntity> GetAllUsers();
+        IEnumerable<UserEntity> GetByPredicate(Expression<Func<UserEntity, bool>> f);
         void CreateUser(UserEntity user);
         void DeleteUser(UserEntity user);
         void UpdateUser(UserEntity user);

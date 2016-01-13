@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using TestingService.BLL.Interface.Entities;
@@ -24,6 +25,12 @@ namespace TestingService.BLL.Services
         public IEnumerable<QuestionEntity> GetAll()
         {
             return questionRepository.GetAll().Select(question => question.ToBllQuestion());
+        }
+
+        public IEnumerable<QuestionEntity> GetByPredicate(Expression<Func<QuestionEntity, bool>> f)
+        {
+            Func<QuestionEntity, bool> func = f.Compile();
+            return questionRepository.GetByPredicate(question => func(question.ToBllQuestion())).Select(question => question.ToBllQuestion());
         }
 
         public QuestionEntity GetById(int key)

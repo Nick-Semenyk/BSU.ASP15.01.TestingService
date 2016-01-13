@@ -1,2 +1,6 @@
 E:\7 сем\EPAM\P\TestLib\TestLib\bin\Debug\TestLib.exe.config
 E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestLib\bin\Debug\TestLib.exe.config
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestLib\bin\Debug\TestLib.exe
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestLib\bin\Debug\TestLib.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestLib\obj\Debug\TestLib.exe
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestLib\obj\Debug\TestLib.pdb

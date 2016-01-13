@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Net;
 using TestingService.DAL.Interface.Entities;
 using TestingService.DAL.Interface.Repositories;
 using TestingService.ORM;
@@ -31,6 +34,22 @@ namespace TestingService.DAL.Repositories
                 Login = user.Login,
                 PasswordHash = user.PasswordHash
             });
+        }
+
+        public IEnumerable<DalUser> GetByPredicate(Expression<Func<DalUser, bool>> f)
+        {
+            Func<DalUser, bool> func = f.Compile();
+            IEnumerable<DalUser> users = context.Set<Users>().Where(u => true).AsEnumerable().Select(user => new DalUser()
+            {
+                Id = user.id,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                SecondName = user.SecondName,
+                ThirdName = user.ThirdName,
+                Login = user.Login,
+                PasswordHash = user.PasswordHash
+            }).AsEnumerable();
+            return users.Where(user => func(user)).AsEnumerable();
         }
 
         public DalUser GetById(int key)
@@ -93,6 +112,8 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             Users user = context.Set<Users>().FirstOrDefault(u => u.Login == login);
+            if (user == null)
+                return null;
             return new DalUser()
             {
                 Id = user.id,

@@ -26,6 +26,8 @@ namespace TestingService.BLL.Mappers
 
         public static UserEntity ToBllUser(this DalUser e)
         {
+            if (e == null)
+                return null;
             return new UserEntity()
             {
                 Id = e.Id,

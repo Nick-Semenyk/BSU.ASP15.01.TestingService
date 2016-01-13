@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using TestingService.DAL.Interface.Entities;
 using TestingService.DAL.Interface.Repositories;
 using TestingService.ORM;
@@ -26,6 +28,18 @@ namespace TestingService.DAL.Repositories
                 Id = role.id,
                 Name = role.Name
             });
+        }
+
+        public IEnumerable<DalRole> GetByPredicate(Expression<Func<DalRole, bool>> f)
+        {
+            Func<DalRole, bool> func = f.Compile();
+            IEnumerable<DalRole> users = context.Set<Roles>().Where(u => true).AsEnumerable().Select(role => new DalRole()
+            {
+                Id = role.id,
+                Name = role.Name
+            }).AsEnumerable();
+            List<DalRole> result = users.Where(user => func(user)).ToList();
+            return result;
         }
 
         public DalRole GetById(int key)

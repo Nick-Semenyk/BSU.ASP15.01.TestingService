@@ -12,3 +12,17 @@ E:\7 сем\EPAM\P\TestLib\TestingService.DAL\bin\Debug\TestingService.ORM.pdb
 E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.csprojResolveAssemblyReference.cache
 E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.dll
 E:\7 сем\EPAM\P\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.dll.config
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\EntityFramework.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\EntityFramework.SqlServer.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.Interface.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.ORM.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\EntityFramework.xml
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\EntityFramework.SqlServer.xml
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.DAL.Interface.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\bin\Debug\TestingService.ORM.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.csprojResolveAssemblyReference.cache
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.DAL\obj\Debug\TestingService.DAL.pdb

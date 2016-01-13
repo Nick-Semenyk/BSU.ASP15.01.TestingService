@@ -12,3 +12,17 @@ E:\7 сем\EPAM\P\TestLib\TestingService.ORM\bin\Debug\EntityFramework.SqlServe
 E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.csprojResolveAssemblyReference.cache
 E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.dll
 E:\7 сем\EPAM\P\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\App_Data\TestServiceDatabase.mdf
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\App_Data\TestServiceDatabase_log.ldf
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\TestServiceDatabase.mdf
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\TestServiceDatabase_log.ldf
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.dll.config
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\TestingService.ORM.pdb
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\EntityFramework.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\EntityFramework.SqlServer.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\EntityFramework.xml
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\bin\Debug\EntityFramework.SqlServer.xml
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.csprojResolveAssemblyReference.cache
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.dll
+E:\REPOS\BSU.ASP15.01.TestingService\TestLib\TestingService.ORM\obj\Debug\TestingService.ORM.pdb

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,12 @@ namespace TestingService.BLL.Services
         public IEnumerable<UserEntity> GetAllUsers()
         {
             return userRepository.GetAll().Select(user => user.ToBllUser());
+        }
+
+        public IEnumerable<UserEntity> GetByPredicate(Expression<Func<UserEntity, bool>> f)
+        {
+            Func<UserEntity, bool> func = f.Compile();
+            return userRepository.GetByPredicate(t => func(t.ToBllUser())).Select(t => t.ToBllUser());
         }
 
         public void CreateUser(UserEntity user)

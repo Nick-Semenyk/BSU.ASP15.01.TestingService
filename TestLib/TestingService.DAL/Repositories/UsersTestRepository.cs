@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using TestingService.DAL.Interface.Entities;
 using TestingService.DAL.Interface.Repositories;
 using TestingService.ORM;
@@ -32,6 +33,23 @@ namespace TestingService.DAL.Repositories
                 TestId = ut.TestId,
                 UserId = ut.UserId
             });
+        }
+
+        public IEnumerable<DalUsersTest> GetByPredicate(Expression<Func<DalUsersTest, bool>> f)
+        {
+            Func<DalUsersTest, bool> func = f.Compile();
+            IEnumerable<DalUsersTest> users = context.Set<UsersTests>().Where(u => true).AsEnumerable().Select(ut => new DalUsersTest()
+            {
+                Id = ut.id,
+                BeginningTime = ut.BeginningTime,
+                EndingTime = ut.EndingTime,
+                MarkForTest = ut.MarkForTest,
+                RightAnswersCount = ut.RightAnswersCount,
+                TestId = ut.TestId,
+                UserId = ut.UserId
+            }).AsEnumerable();
+            List<DalUsersTest> result = users.Where(user => func(user)).ToList();
+            return result;
         }
 
         public DalUsersTest GetById(int key)
