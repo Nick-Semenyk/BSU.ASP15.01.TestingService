@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit Test";
 }
 <h4>Test parameters</h4>
-@using (Html.BeginForm("UpdateTest", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditTest", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(test => test.Id)

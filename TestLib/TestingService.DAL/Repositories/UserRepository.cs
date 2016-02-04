@@ -57,6 +57,8 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             var ormuser = context.Set<Users>().FirstOrDefault(user => user.id == key);
+            if (ormuser == null)
+                return null;
             return new DalUser()
             {
                 Id = ormuser.id,

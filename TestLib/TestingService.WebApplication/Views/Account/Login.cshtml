@@ -9,7 +9,7 @@
 {
     @Html.AntiForgeryToken()
     <h4>Authentication form</h4>
-    <hr />
+    <hr/>
     @Html.ValidationSummary("", new { @class = "text-danger" })
     <div class="form-group">
         @Html.LabelFor(m => m.Login, new { @class = "col-md-2 control-label" })

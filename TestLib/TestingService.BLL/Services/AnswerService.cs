@@ -23,12 +23,12 @@ namespace TestingService.BLL.Services
             this.answerRepository = answerRepository;
         }
 
-        public AnswerEntity GetUserEntity(int id)
+        public AnswerEntity GetAnswerEntity(int id)
         {
             return answerRepository.GetById(id).ToBllAnswer();
         }
 
-        public IEnumerable<AnswerEntity> GetAllUsers()
+        public IEnumerable<AnswerEntity> GetAllAnswers()
         {
             return answerRepository.GetAll().Select(answer => answer.ToBllAnswer());
         }

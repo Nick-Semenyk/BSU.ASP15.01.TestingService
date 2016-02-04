@@ -179,6 +179,10 @@ td
 	color:#FF1111;
 }
 
+.error-text{
+    color: #FF1111;
+}
+
 .list
 {
 	text-align:left;
@@ -200,12 +204,14 @@ td
 	display: block;
 }
 
-.license{
-    border:3px solid black;
+.horizontal-display{
+    float:left;
 }
 
-.license-text{
-    border:1px solid #FFE67F;
-    font-size: 25px;
-    font-family: "Times New Roman", Times, serif;
+.vertical-display{
+    float:none;
+}
+
+.question-button{
+    display: block;
 }

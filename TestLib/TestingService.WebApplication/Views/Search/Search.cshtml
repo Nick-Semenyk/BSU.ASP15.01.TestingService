@@ -1,0 +1,44 @@
+﻿@model TestingService.WebApplication.Models.Pages.TestPageViewModel
+@using TestingService.WebApplication.Helpers
+@using TestingService.WebApplication.Models
+@{
+    ViewBag.Title = "Search";
+    string query = ViewBag.Query ?? "";
+}
+
+<h4>Search on :</h4>
+@using (Html.BeginForm("Search", "Search", FormMethod.Get, new { role = "form" }))
+{
+    <div class="text-left form-group">
+        @Html.TextBox("query", query)
+    </div>
+    <div class="form-group">
+        <div>
+            <input type="submit" class="btn btn-default" value="Search" />
+        </div>
+    </div>
+}
+@Html.ActionLink("Advanced search", "AdvancedSearch", "Search")
+
+<h2>Search results:</h2>
+
+@foreach (TestViewModel test in Model.Tests)
+{
+    <h4>Test name:</h4> @test.Name
+    @*  <h4>Test creator:</h4> @test.*@
+    <h4>Program description:</h4> @test.Description
+    <h4>More info:</h4> @Html.ActionLink(test.Name, "TestInfo", "TestInformer", new { id = test.Id }, null)
+    <hr />
+}
+@*
+@foreach (TestViewModel test in ViewBag.Tests)
+{
+    <h4>Test name:</h4> @test.Name
+  @*  <h4>Test creator:</h4> @test. */@
+    <h4>Program description:</h4> @test.Description
+    <h4>More info:</h4> @Html.ActionLink(test.Name, "TestInfo", "TestInformer", new { id = test.Id }, null)
+    <hr />
+}*@
+<div class="btn-group">
+    @Html.PageLinks(Model.PageInfo, x => Url.Action("Search", new { query, page = x }))
+</div>

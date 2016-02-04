@@ -8,6 +8,11 @@ namespace TestingService.WebApplication.Models
 {
     public class TestViewModel
     {
+        public int Id { get; set; }
+        public int AuthorId { get; set; }
+        public int QuestionCount { get; set; }
+        public DateTime CreationDate { get; set; }
+
         [Display(Name = "Name")]
         [Required]
         [RegularExpression(@".{4,50}", ErrorMessage = "Name should be from 4 to 50 characters long")]

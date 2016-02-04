@@ -19,6 +19,5 @@ namespace TestingService.DAL.Interface.Repositories
 
         bool AllowedUser(DalTest test, DalUser user);
         void SetCoauthor(DalUser user, DalTest test);
-        
     }
 }

@@ -1,0 +1,26 @@
+﻿@model TestingService.WebApplication.Models.TestViewModel
+@{
+    ViewBag.Title = Model.Name + " - test info";
+    string text = ViewBag.Username;
+}
+<ul class="list-none">
+    <li><b>Name:</b> @Model.Name</li>
+    <li><b>Description:</b> @Model.Description</li>
+    <li><b>Count of questions:</b> @Model.QuestionCount</li>
+
+    <li><b>Allowed time:</b> @Model.AllowedTime</li>
+    <li><b>Creation date:</b> @Model.CreationDate</li>
+    <li><b>Author:</b> @Html.ActionLink(@text, "ShowProfile", "Account", new {id = Model.AuthorId}, null)</li> 
+</ul>
+@if (ViewBag.StartLink)
+{
+    if (ViewBag.TestReady)
+    {
+        <p>@Html.ActionLink("Start test", "StartTest", "TestPassing", new {id = Model.Id}, null)</p>
+    }
+    else
+    {
+        <h5 class="error-text">Test is not ready yet or test has some issues</h5>
+    }
+}
+

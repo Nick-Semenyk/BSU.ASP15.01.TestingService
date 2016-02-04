@@ -57,6 +57,8 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             var ut = context.Set<UsersTests>().FirstOrDefault(t => t.id == key);
+            if (ut == null)
+                return null;
             return new DalUsersTest()
             {
                 Id = ut.id,

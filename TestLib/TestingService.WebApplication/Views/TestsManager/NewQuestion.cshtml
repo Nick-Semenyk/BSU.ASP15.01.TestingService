@@ -1,53 +1,73 @@
-﻿@model TestingService.WebApplication.Models.QuestionViewModel
+﻿@using TestingService.WebApplication.Models
+@model TestingService.WebApplication.Models.Question.QuestionViewModel
 @{
     ViewBag.Title = "New question";
 }
 <h2>New question</h2>
-
-@using (Html.BeginForm("NewQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@Html.ActionLink("Add text", "AddToQuestion", "TestsManager", new { @class = "question-button", type = 0, testId = Model.TestId, questionId = Model.Id }, null)
+@Html.ActionLink("Add checkbox", "AddToQuestion", "TestsManager", new { @class = "question-button", type = 1, testId = Model.TestId, questionId = Model.Id }, null)
+@Html.ActionLink("Add radiobutton", "AddToQuestion", "TestsManager", new { @class = "question-button", type = 2, testId = Model.TestId, questionId = Model.Id }, null)
+@Html.ActionLink("Add textbox", "AddToQuestion", "TestsManager", new { @class = "question-button", type = 3, testId = Model.TestId, questionId = Model.Id }, null)
+<div>
+@using (Html.BeginForm("NewQuestion", "TestsManager", FormMethod.Post))
 {
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.TestId)
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(m => m.QuestionNumber, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control" })
-        </div>
+    @Html.HiddenFor(model => model.Id)
+    ;
+    @Html.HiddenFor(model => model.QuestionNumber)
+    ;
+    @Html.HiddenFor(model => model.TestId)
+    ;
+    <div class="horizontal-display width-percent50">
+        @for (int i = 0; i < Model.Items.Count; i++)
+        {
+            switch (Model.Items[i].ItemType)
+            {
+                case DisplayType.Text:
+                    <textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                    break;
+                case DisplayType.CheckBox:
+                    <textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                    break;
+                case DisplayType.RadioButton:
+                    <textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                    break;
+                case DisplayType.TextBox:
+                    <textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                    break;
+            }
+        }
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Radiobutton, new {@class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.QuestionType, 2)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Checkbox, new {@class = "col-md-2 control-label"})
-        <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.QuestionType, 1)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Textbox, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.RadioButtonFor(m => m.QuestionType, 3)
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.QuestionCount, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.QuestionCount, new { @class = "form-control" })
-        </div>
-    </div>
-    
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Create" />
+            <input type="submit" class="btn btn-default" value="Update"/>
         </div>
     </div>
 }
+        <div class="horizontal-display width-percent50">
+            <p>Preview:</p>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                switch (Model.Items[i].ItemType)
+                {
+                    case DisplayType.Text:
+                        <p>@Model.Items[i].Value</p>
+                        break;
+                    case DisplayType.CheckBox:
+                        <p>
+                            @Model.Items[i].Value <input type="checkbox"/>
+                        </p>
+                        break;
+                    case DisplayType.RadioButton:
+                        <p>
+                            @Model.Items[i].Value <input type="radio" name="rb" value="@i"/>
+                        </p>
+                        break;
+                    case DisplayType.TextBox:
+                        <p>
+                            @Model.Items[i].Value <input type="text"/>
+                        </p>
+                        break;
+                }
+            }
+        </div>
+    </div>

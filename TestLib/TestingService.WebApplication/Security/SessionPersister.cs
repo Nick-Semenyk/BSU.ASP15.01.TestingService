@@ -9,19 +9,9 @@ namespace TestingService.WebApplication.Security
 {
     public static class SessionPersister
     {
-        private static string usernameSessionvar = "";
-
-        public static string Username
-        {
-            get
-            {
-                if (HttpContext.Current == null)
-                    return string.Empty;
-                var sessionVar = HttpContext.Current.Session[usernameSessionvar];
-                return sessionVar as string;
-            }
-            set { HttpContext.Current.Session[usernameSessionvar] = value; }
-        }
+        public static string Username { get;set; }
+        public static int Id { get; set; }
+        public static string Email { get; set; }
 
         public static bool IsInRole(string role)
         {

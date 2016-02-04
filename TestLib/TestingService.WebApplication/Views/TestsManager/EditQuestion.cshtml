@@ -1,122 +1,91 @@
-﻿@model TestingService.WebApplication.Models.AnswerViewModel
-
+﻿@using TestingService.WebApplication.Models
+@using TestingService.WebApplication.Models.Answer
+@model TestingService.WebApplication.Models.Question.QuestionViewModel
 @{
-    ViewBag.Title = "Edit question";
+    ViewBag.Title = "New question";
 }
-
-@if (Model.QuestionType == 1)
-{
-    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.QuestionId)
-        @Html.HiddenFor(m => m.AnswerCount)
-        @Html.HiddenFor(m => m.QuestionType)
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
-            </div>
-        </div>
-        for (int i = 0; i < Model.Answers.Count(); i++)
+<h2>Edit question</h2>
+<div class="btn-group">
+    @Html.ActionLink("Add text", "AddToQuestion", "TestsManager", new { type = 0, testId = Model.TestId, questionId = Model.Id }, null)
+    @Html.ActionLink("Add checkbox", "AddToQuestion", "TestsManager", new { type = 1, testId = Model.TestId, questionId = Model.Id }, null)
+    @Html.ActionLink("Add radiobutton", "AddToQuestion", "TestsManager", new { type = 2, testId = Model.TestId, questionId = Model.Id }, null)
+    @Html.ActionLink("Add textbox", "AddToQuestion", "TestsManager", new { type = 3, testId = Model.TestId, questionId = Model.Id }, null)
+    @Html.ActionLink("Add answer", "AddAnswer", "TestsManager", new { testId = Model.TestId, questionId = Model.Id }, null))
+</div>
+<div @*class="horizontal-display"*@>
+        @using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post))
         {
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.QuestionNumber)
+            @Html.HiddenFor(model => model.TestId)
+            <div class="col-xs-6">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    switch (Model.Items[i].ItemType)
+                    {
+                        case DisplayType.Text:
+                            <p>Displaying text: </p><textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                            break;
+                        case DisplayType.CheckBox:
+                            <p>Displaying checkbox: </p><textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                            break;
+                        case DisplayType.RadioButton:
+                            <p>Displaying ragiobutton: </p><textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                            break;
+                        case DisplayType.TextBox:
+                            <p>Displaying checkbox: </p><textarea class="form-control" cols="20" data-val="true" id="@i" name="@i" rows="2">@Model.Items[i].Value</textarea>
+                            break;
+                    }
+                    <p>@Html.ActionLink("Delete", "DeleteQuestionItem", "TestsManager", new { questionId = Model.Id, id = i }, null)</p>
+                }
+            </div>
             <div class="form-group">
-                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.CheckBoxFor(m=>m.CorrectBoolAnswers[i], new { @class = "form-control" })
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-default" value="Update" />
                 </div>
             </div>
         }
-        <div class="form-group">
-            @Html.LabelFor(m => m.AnswerValue, new {@class = "col-md-2 control-label"})
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AnswerValue, new {@class = "form-control"})
-            </div>
+        <div class="col-xs-6">
+            <p>Preview:</p>
+            @for (int i = 0; i < Model.Items.Count; i++)
+            {
+                switch (Model.Items[i].ItemType)
+                {
+                    case DisplayType.Text:
+                        <p>@Model.Items[i].Value</p>
+                        break;
+                    case DisplayType.CheckBox:
+                        <p>
+                            @Model.Items[i].Value <input type="checkbox" />
+                        </p>
+                        break;
+                    case DisplayType.RadioButton:
+                        <p>
+                            @Model.Items[i].Value <input type="radio" name="rb" value="@i" />
+                        </p>
+                        break;
+                    case DisplayType.TextBox:
+                        <p>
+                            @Model.Items[i].Value <input type="text" />
+                        </p>
+                        break;
+                }
+            }
         </div>
-        
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Save" />
-            </div>
-        </div>
-    }
-}
-@if (Model.QuestionType == 2)
-{
-    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.QuestionId)
-        @Html.HiddenFor(m => m.AnswerCount)
-        @Html.HiddenFor(m => m.QuestionType)
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
-            </div>
-        </div>
-        for (int i = 0; i < Model.Answers.Count(); i++)
+    </div>
+    <div>
+        @{ int j = 1; }
+        @foreach (AnswerViewModel answer in ViewBag.Answers)
         {
-            <div class="form-group">
-                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.RadioButtonFor(m => m.RadioButtonNumber, i)
-                </div>
-            </div>
+            <li>
+                @Html.ActionLink(j.ToString(), "AnswerInfo", "TestsManager", new { answerId = answer.Id }, null)
+                |
+                @Html.ActionLink("Edit", "EditAnswer", "TestsManager", new { answerId = answer.Id }, null)
+                |
+                @Html.ActionLink("Delete", "DeleteAnswer", "TestsManager", new { answerId = answer.Id }, null)
+            </li>
+            {
+                j++;
+            }
         }
-        <div class="form-group">
-            @Html.LabelFor(m => m.AnswerValue, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AnswerValue, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Save" />
-            </div>
-        </div>
-    }
-}
-@if (Model.QuestionType == 3)
-{
-    using (Html.BeginForm("EditQuestion", "TestsManager", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(m => m.QuestionId)
-        @Html.HiddenFor(m => m.AnswerCount)
-        @Html.HiddenFor(m => m.QuestionType)
-        <hr />
-        <div class="form-group">
-            @Html.LabelFor(m => m.Question, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(m => m.Question, new { @class = "form-control" })
-            </div>
-        </div>
-        for (int i = 0; i < Model.Answers.Count(); i++)
-        {
-            <div class="form-group">
-                @Html.TextBoxFor(m => m.Answers[i], new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.CorrectAnswers[i], new { @class = "form-control" })
-                </div>
-            </div>
-        }
-        <div class="form-group">
-            @Html.LabelFor(m => m.AnswerValue, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.AnswerValue, new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" class="btn btn-default" value="Save" />
-            </div>
-        </div>
-    }
-}
-
-
+    </div>

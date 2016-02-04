@@ -10,8 +10,8 @@ namespace TestingService.BLL.Interface.Services
 {
     public interface IAnswerService
     {
-        AnswerEntity GetUserEntity(int id); 
-        IEnumerable<AnswerEntity> GetAllUsers();
+        AnswerEntity GetAnswerEntity(int id); 
+        IEnumerable<AnswerEntity> GetAllAnswers();
         IEnumerable<AnswerEntity> GetByPredicate(Expression<Func<AnswerEntity, bool>> f);
         void CreateAnswer(AnswerEntity user);
         void DeleteAnswer(AnswerEntity user);

@@ -8,8 +8,11 @@ using System.Web.Mvc;
 using TestingService.BLL.Interface.Entities;
 using TestingService.BLL.Interface.Services;
 using TestingService.BLL.Services;
+using TestingService.WebApplication.Infrastructure.Mappers;
 using TestingService.WebApplication.Models;
 using TestingService.WebApplication.Security;
+using TestingService.WebApplication.Models.Question;
+using TestingService.WebApplication.Models.Answer;
 
 namespace TestingService.WebApplication.Controllers
 {
@@ -27,6 +30,9 @@ namespace TestingService.WebApplication.Controllers
         private IAnswerService answerService =
             System.Web.Mvc.DependencyResolver.Current.GetService(typeof(AnswerService)) as AnswerService;
 
+        private IUsersAnswersService usersAnswerService =
+            System.Web.Mvc.DependencyResolver.Current.GetService(typeof(UsersAnswersService)) as UsersAnswersService;
+
 
         public TestsManagerController(ITestService testService)
         {
@@ -40,6 +46,22 @@ namespace TestingService.WebApplication.Controllers
             ViewBag.Tests = tests;
             return View();
         }
+
+     /*   [HttpGet]
+        public ActionResult TestInfo(int? testId)
+        {
+            if (testId == null)
+            {
+                return RedirectToAction("Index");
+            }
+            TestEntity e = testService.GetById(testId.Value);
+            if (e == null)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.Username = userService.GetUserEntity(e.AuthorId).ToMvcUser().Login;
+            return View(e);
+        }*/
 
         public ActionResult NewTest()
         {
@@ -73,7 +95,7 @@ namespace TestingService.WebApplication.Controllers
         public ActionResult EditTest(int? testId)
         {
             if (testId == null)
-                return RedirectToAction("Index");
+                return View("Error");
             TestEntity e = testService.GetById(testId.Value);
             IEnumerable<QuestionEntity> questions = questionService.GetAllTestQuestions(e);
             ViewBag.Questions = questions;
@@ -87,9 +109,14 @@ namespace TestingService.WebApplication.Controllers
         public ActionResult EditTest(TestEntity e)
         {
             IEnumerable<QuestionEntity> questions = questionService.GetAllTestQuestions(e);
+            TestEntity oldTest = testService.GetById(e.Id);
+            e.CreationDate = oldTest.CreationDate;
+            e.AuthorId = oldTest.AuthorId;
+            e.QuestionCount = oldTest.QuestionCount;
             ViewBag.Questions = questions;
             ViewBag.Test = e;
-            return View();
+            testService.UpdateTest(e);
+            return View(e);
         }
 
         [HttpGet]
@@ -98,180 +125,264 @@ namespace TestingService.WebApplication.Controllers
             if (testId == null)
                 return RedirectToAction("Index");
             TestEntity e = testService.GetById(testId.Value);
-            ViewBag.Test = e;
             if (e == null)
                 return RedirectToAction("Index");
-            return View(new QuestionViewModel() {TestId = e.Id});
+            e.QuestionCount++;
+            testService.UpdateTest(e);
+            ViewBag.Test = e;
+            QuestionViewModel qvm = new QuestionViewModel()
+            {
+                TestId = e.Id,
+                QuestionNumber = 0
+            };
+            questionService.CreateQuestion(qvm.ToBllQuestion());
+            qvm = questionService.GetAllTestQuestions(e).Select(entity => entity.ToMvcQuestion()).OrderByDescending(model => model.QuestionNumber).First();
+            return RedirectToAction("EditQuestion", new {questionId = qvm.Id});
+            return View(qvm);
         }
 
         [HttpPost]
         public ActionResult NewQuestion(QuestionViewModel qvm)
         {
+            qvm = questionService.GetById(qvm.Id).ToMvcQuestion();
+            var post = Request.Form;
+            for (int i = 0; i<qvm.Items.Count; i++)
+            {
+                qvm.Items[i].Value = post[i.ToString()];
+            }
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Invalid data");
                 return View(qvm);
             }
-            IEnumerable<QuestionEntity> questions = questionService.GetAllTestQuestions(testService.GetById(qvm.TestId));
-            if (questions.Any(entity => entity.QuestionNumberInTest == qvm.QuestionNumber))
-            {
-                ModelState.AddModelError("", "Question with such number is occupied");
-                return View(qvm);
-            }
-            if (qvm.QuestionCount<=0)
-            {
-                ModelState.AddModelError("", "Question count should be positive value");
-                return View(qvm);
-            }
-            string structure = "<question><text>Text</text>";
-            ViewBag.Checkbox = qvm.Checkbox;
-            ViewBag.Radiobutton = qvm.Radiobutton;
-            ViewBag.Textbox = qvm.Textbox;
-            ViewBag.Interview = testService.GetById(qvm.TestId).Interview;
-            for (int i = 0; i<qvm.QuestionCount; i++)
-            {
-                if (qvm.QuestionType == 1)
-                {
-                    structure += $"<cb>{i}</cb>";
-                    continue;
-                }
-                if (qvm.QuestionType == 2)
-                {
-                    structure += $"<rb>{i}</rb>";
-                }
-                else
-                {
-                    structure += $"<tb>{i}</tb>";
-                }
-            }
-            structure += "</question>";
-            QuestionEntity question = new QuestionEntity()
-            {
-                QuestionNumberInTest = qvm.QuestionNumber,
-                QuestionStructure = structure,
-                TestId = qvm.TestId
-            };
-            questionService.CreateQuestion(question);
-            AnswerViewModel avm = new AnswerViewModel()
-            {
-                QuestionId = question.Id,
-                QuestionType = qvm.QuestionType,
-                AnswerCount = qvm.QuestionCount,
-                Answers = new string[qvm.QuestionCount],
-                CorrectAnswers = new string[qvm.QuestionCount],
-                CorrectBoolAnswers = new bool[qvm.QuestionCount],
-                AnswerValue = 0,
-                Question = ""
-            };
-            return View("EditQuestion", avm);
+            //!user, rights
+            questionService.UpdateQuestion(qvm.ToBllQuestion());
+            return View(qvm);
         }
 
         [HttpGet]
         public ActionResult EditQuestion(int? questionId)
         {
             if (questionId == null)
-                return RedirectToAction("Index");
-            QuestionEntity e = questionService.GetById(questionId.Value);
-            ViewBag.Test = e;
-            if (e == null)
-                return RedirectToAction("Index");
-            int count = Regex.Matches(e.QuestionStructure, "<rb>").Count
-                + Regex.Matches(e.QuestionStructure, "<cb>").Count
-                + Regex.Matches(e.QuestionStructure, "<tb>").Count;
-            int questionType = 1;
-            if (Regex.Matches(e.QuestionStructure, "<cb>").Count > 0)
-                questionType = 1;
-            if (Regex.Matches(e.QuestionStructure, "<rb>").Count > 0)
-                questionType = 2;
-            if (Regex.Matches(e.QuestionStructure, "<tb>").Count > 0)
-                questionType = 3;
-            AnswerViewModel avm = new AnswerViewModel()
             {
-                QuestionId = questionId.Value,
-                QuestionType = questionType,
-                AnswerCount = count,
-                Answers = new string[count],
-                CorrectAnswers = new string[count],
-                CorrectBoolAnswers = new bool[count],
-                AnswerValue = 0,
-                Question = ""
-            };
-            return View(avm);
+                return RedirectToAction("Index");
+            }
+            QuestionViewModel e = questionService.GetById(questionId.Value).ToMvcQuestion();
+            ViewBag.Answers = answerService.GetAllAnswers(e.ToBllQuestion()).Select(entity => entity.ToMvcAnswer());
+            return View("EditQuestion", e);
+        }
+
+        [HttpGet]
+        public ActionResult AddToQuestion(int? type, int? testId, int? questionId)
+        {
+            if (type == null || testId == null || questionId == null)
+            {
+                return View("Error");
+            }
+            QuestionViewModel e = questionService.GetById(questionId.Value).ToMvcQuestion();
+            e.Items.Add(new QuestionItem() {ItemType = (DisplayType) type.Value, Value = " "});
+            questionService.UpdateQuestion(e.ToBllQuestion());
+            return RedirectToAction("EditQuestion", new {questionId = e.Id});
         }
 
         [HttpPost]
-        public ActionResult EditQuestion(AnswerViewModel e)
+        public ActionResult EditQuestion(QuestionViewModel qvm)
         {
+            qvm = questionService.GetById(qvm.Id).ToMvcQuestion();
+            var post = Request.Form;
+            for (int i = 0; i < qvm.Items.Count; i++)
+            {
+                qvm.Items[i].Value = post[i.ToString()];
+            }
             if (!ModelState.IsValid)
             {
                 ModelState.AddModelError("", "Invalid data");
-                return View(e);
+                return View(qvm);
             }
-            QuestionEntity question = questionService.GetById(e.QuestionId);
-            string matchCodeTag = @"\<text\>(.*?)\</text\>";
-            string textToReplace = question.QuestionStructure;
-            string replaceWith = $"<text>{e.Question}</text>";
-            string output = Regex.Replace(textToReplace, matchCodeTag, replaceWith);
-            question.QuestionStructure = output;
-            string answerStructure = "<answer>";
-            if (e.QuestionType == 2)
-                answerStructure += $"<rb>{e.RadioButtonNumber}</rb>";
-            for (int i = 0; i<e.AnswerCount; i++)
+            //!user, rights
+            ViewBag.Answers = answerService.GetAllAnswers(qvm.ToBllQuestion()).Select(entity => entity.ToMvcAnswer());
+            questionService.UpdateQuestion(qvm.ToBllQuestion());
+            return View(qvm);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteQuestion(int? questionId)
+        {
+            if (questionId == null)
+                return View("Error");
+            QuestionViewModel qvm = questionService.GetById(questionId.Value).ToMvcQuestion();
+            IEnumerable<AnswerEntity> answers = answerService.GetAllAnswers(qvm.ToBllQuestion());
+            foreach(AnswerEntity a in answers)
             {
-                if (e.QuestionType == 1)
-                    if (e.CorrectBoolAnswers[i])
-                        answerStructure += $"<cb>{e.Answers[i]}</cb>";
-                if (e.QuestionType == 3)
-                    answerStructure += $"<tb>{e.CorrectAnswers[i]}</tb>";
+                answerService.DeleteAnswer(a);
             }
-            answerStructure += "</answer>";
-            AnswerEntity answer = new AnswerEntity()
+            IEnumerable<UsersAnswersEntity> usersAnswers = usersAnswerService.GetByPredicate(entity => entity.QuestionId == qvm.Id);
+            foreach(UsersAnswersEntity e in usersAnswers)
             {
-                AnswerValue = e.AnswerValue,
-                QuestionId = e.QuestionId,
-                AnswerStructure = answerStructure
-            };
-            answerService.CreateAnswer(answer);
-            return RedirectToAction("EditTest", question.TestId);
+                usersAnswerService.DeleteAnswer(e);
+            }
+            List<QuestionEntity> questions =
+                questionService.GetAllTestQuestions(testService.GetById(qvm.TestId)).ToList();
+            bool dec = false;
+            for (int i = 0; i<questions.Count; i++)
+            {
+                if (dec && questions[i].QuestionNumberInTest!=null)
+                {
+                    questions[i].QuestionNumberInTest--;
+                }
+                if (qvm.Id == questions[i].Id)
+                {
+                    questionService.DeleteQuestion(qvm.ToBllQuestion());
+                    dec = true;
+                }
+            }
+            TestEntity test = testService.GetById(qvm.TestId);
+            test.QuestionCount--;
+            testService.UpdateTest(test);
+            return RedirectToAction("EditTest", new {testId = qvm.TestId});
+        }
+
+        [HttpGet]
+        public ActionResult DeleteQuestionItem(int? questionId, int? id)
+        {
+            if (questionId == null || id == null)
+            {
+                return View("Error");
+            }
+            QuestionViewModel qvm = questionService.GetById(questionId.Value).ToMvcQuestion();
+            int j = id.Value;
+            if (qvm.Items[id.Value].ItemType != DisplayType.Text)
+            {
+                IEnumerable<AnswerViewModel> answers =
+                    answerService.GetAllAnswers(qvm.ToBllQuestion()).Select(entity => entity.ToMvcAnswer());
+                if (answers.Any())
+                {
+                    for (int i=0; i<=id.Value; i++)
+                    {
+                        if (qvm.Items[i].ItemType == DisplayType.Text)
+                            j--;
+                    }
+                    foreach(AnswerViewModel a in answers)
+                    {
+                        a.Items.RemoveAt(j);
+                        answerService.UpdateAnswer(a.ToBllAnswer());
+                    }
+                }
+            }
+            qvm.Items.RemoveAt(id.Value);
+            questionService.UpdateQuestion(qvm.ToBllQuestion());
+            return RedirectToAction("EditQuestion", new {questionId = questionId.Value});
         }
         
         [HttpGet]
         public ActionResult QuestionInfo(int? questionId)
         {
-            if (questionId == null)
-                return RedirectToAction("Index");
-            QuestionEntity e = questionService.GetById(questionId.Value);
-            if (e == null)
-                return RedirectToAction("Index");
-            int count = Regex.Matches(e.QuestionStructure, "<rb>").Count
-                + Regex.Matches(e.QuestionStructure, "<cb>").Count
-                + Regex.Matches(e.QuestionStructure, "<tb>").Count;
-            int questionType = 1;
-            if (Regex.Matches(e.QuestionStructure, "<cb>").Count > 0)
-                questionType = 1;
-            if (Regex.Matches(e.QuestionStructure, "<rb>").Count > 0)
-                questionType = 2;
-            if (Regex.Matches(e.QuestionStructure, "<tb>").Count > 0)
-                questionType = 3;
-            
-            string match = @"<text>(.*?)</text>";
-            string match1 = @"<cb>(.*?)</cb>";
-            string match2 = @"<rb>(.*?)</rb>";
-            string match3 = @"<tb>(.*?)</tb>";
-            QuestionTestViewModel tvm = new QuestionTestViewModel();
-            tvm.Variants = new string[count];
-            tvm.Question = Regex.Match(e.QuestionStructure, match).Groups[0].Value;
-            tvm.QuestionType = questionType;
-            for (int i = 0; i<count; i++)
+            throw new NotImplementedException();
+        }
+
+        [HttpGet]
+        public ActionResult AddAnswer(int? testId, int? questionId)
+        {
+            if (testId == null || questionId == null)
             {
-                if (questionType == 1)
-                    tvm.Variants[i] = Regex.Match(e.QuestionStructure, match1).Groups[i].Value;
-                if (questionType == 2)
-                    tvm.Variants[i] = Regex.Match(e.QuestionStructure, match2).Groups[i].Value;
-                if (questionType == 3)
-                    tvm.Variants[i] = Regex.Match(e.QuestionStructure, match3).Groups[i].Value;
+                return View("Error");
             }
-            return View(tvm);
+            AnswerViewModel a = new AnswerViewModel()
+            {
+                AnswerValue = 0,
+                QuestionId = questionId.Value
+            };
+            QuestionViewModel q = questionService.GetById(a.QuestionId).ToMvcQuestion();
+            foreach (QuestionItem item in q.Items)
+            {
+                a.Items.Add(new AnswerItem() {ItemType = item.ItemType, BoolValue = false, Value = ""});
+            }
+            answerService.CreateAnswer(a.ToBllAnswer());
+            a = answerService.GetByPredicate(entity => entity.QuestionId == questionId.Value).Last().ToMvcAnswer();
+            return RedirectToAction("EditAnswer", new {answerId = a.Id});
+        }
+
+        [HttpGet]
+        public ActionResult EditAnswer(int? answerId)
+        {
+            if (answerId == null)
+                return View("Error");
+            AnswerViewModel a = answerService.GetAnswerEntity(answerId.Value).ToMvcAnswer();
+            if (a == null)
+                return View("Error");
+            ViewBag.Question = questionService.GetById(a.QuestionId).ToMvcQuestion();
+            return View(a);
+        }
+
+        [HttpPost]
+        public ActionResult EditAnswer(AnswerViewModel a)
+        {
+            AnswerViewModel answerFromBase = answerService.GetAnswerEntity(a.Id).ToMvcAnswer();
+            answerFromBase.AnswerValue = a.AnswerValue;
+            a = answerFromBase;
+            QuestionViewModel q = questionService.GetById(a.QuestionId).ToMvcQuestion();
+            var post = Request.Form;
+            int j = 0;
+            for (int i = 0; i < q.Items.Count; i++)
+            {
+                switch(q.Items[i].ItemType)
+                {
+                    case DisplayType.Text:
+                        break;
+                    case DisplayType.CheckBox:
+                        if (post[i.ToString()] != null)
+                            a.Items[j].Value = "true";
+                        j++;
+                        break;
+                    case DisplayType.RadioButton:
+                        if (post[i.ToString()] != null)
+                            a.Items[j].Value = "true";
+                        j++;
+                        break;
+                    case DisplayType.TextBox:
+                        a.Items[j].Value = post[i.ToString()];
+                        j++;
+                        break;
+                }
+            }
+            answerService.UpdateAnswer(a.ToBllAnswer());
+            ViewBag.Question = questionService.GetById(a.QuestionId).ToMvcQuestion();
+            return View(a);
+        }
+
+        private bool IsTestReady(TestViewModel test)
+        {
+            TestEntity t = testService.GetById(test.Id);
+            if (t.QuestionCount == 0)
+                return false;
+            IEnumerable<QuestionEntity> questions = questionService.GetAllTestQuestions(test.ToBllTest());
+            foreach(QuestionEntity q in questions)
+            {
+                if(!IsQuestionReady(q.ToMvcQuestion()))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private bool IsQuestionReady(QuestionViewModel q)
+        {
+            int questionItems = 0;
+            foreach(QuestionItem item in q.Items)
+            {
+                if (item.ItemType != DisplayType.Text)
+                    questionItems++;
+            }
+            if (questionItems == 0)
+                return false;
+            IEnumerable<AnswerViewModel> answers = answerService.GetAllAnswers(q.ToBllQuestion()).Select(entity => entity.ToMvcAnswer());
+            foreach (AnswerViewModel a in answers)
+                if (answers.Where(b => a!=b).Any(b => a.Structure == b.Structure))
+                {
+                    return false;
+                }
+            return true;
         }
     }
 }

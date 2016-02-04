@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace TestingService.WebApplication.Models
 {
@@ -10,10 +11,12 @@ namespace TestingService.WebApplication.Models
     {
         [Display(Name = "Login")]
         [Required]
-        [RegularExpression(@"\w{4,20}", ErrorMessage = "Login should be from 4 to 20 characters long")]
+        //[Remote("DoesLoginExist", "Account", HttpMethod = "POST", ErrorMessage = "Login already exists. Please enter a different login.")]
+        [RegularExpression(@"\w{4,20}", ErrorMessage = "Login should be from 4 to 20 alphanumeric characters long")]
         public string Login { get; set; }
 
         [EmailAddress]
+        //[Remote("DoesEmailExist", "Account", HttpMethod = "POST", ErrorMessage = "Email already exists. Please enter a different email.")]
         [Display(Name = "Email address")]
         [Required]
         public string Email { get; set; }
@@ -38,7 +41,7 @@ namespace TestingService.WebApplication.Models
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Required]
-        [Compare("Password", ErrorMessage = "The new password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 }

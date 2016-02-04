@@ -1,0 +1,70 @@
+﻿@using TestingService.WebApplication.Models
+@model TestingService.WebApplication.Models.Answer.AnswerViewModel
+@{
+    ViewBag.Title = "Edit answer";
+    int j = 0;
+}
+<h2>Edit answer</h2>
+@Html.ActionLink("Back to question", "EditQuestion", "TestsManager", new { @class = "question-button", questionId = Model.QuestionId }, null)
+<div class="horizontal-display">
+    @using (Html.BeginForm("EditAnswer", "TestsManager", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.QuestionId)
+        <div class="vertical-display width-percent50">
+            <p>Answer value: @Html.TextBoxFor(model => model.AnswerValue)</p>
+            @for (int i = 0; i < ViewBag.Question.Items.Count; i++)
+            {
+                switch ((DisplayType)ViewBag.Question.Items[i].ItemType)
+                {
+                    case DisplayType.Text:
+                        <p>@ViewBag.Question.Items[i].Value</p>
+                        break;
+                    case DisplayType.CheckBox:
+                        <p>
+                            @ViewBag.Question.Items[i].Value
+                            @{
+                                if (Model.Items[j].BoolValue)
+                                {
+                                    <input type="checkbox" name="@i" id="@i" checked/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name="@i" id="@i"/>
+                                }
+                                j++;
+                            }
+                        </p>
+                        break;
+                    case DisplayType.RadioButton:
+                        <p>
+                            @ViewBag.Question.Items[i].Value
+                            @{
+                                if (Model.Items[j].BoolValue)
+                                {
+                                    <input type="radio" name="@i" id="@i" checked />
+                                }
+                                else
+                                {
+                                    <input type="radio" name="@i" id="@i" />
+                                }
+                                j++;
+                            }
+                        </p>
+                        break;
+                    case DisplayType.TextBox:
+                        <p>
+                            @ViewBag.Question.Items[i].Value <input type="text" name="@i" id="@i" value="@Model.Items[j].Value"/>
+                            @{ j++;}
+                        </p>
+                        break;
+                }
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="Update" />
+            </div>
+        </div>
+    }
+</div>

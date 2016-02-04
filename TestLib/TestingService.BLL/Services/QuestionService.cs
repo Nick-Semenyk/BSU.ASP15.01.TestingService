@@ -40,6 +40,7 @@ namespace TestingService.BLL.Services
 
         public void CreateQuestion(QuestionEntity e)
         {
+            e.QuestionNumberInTest = GetByPredicate(entity => entity.TestId == e.TestId).Count() + 1;
             questionRepository.Create(e.ToDalQuestion());
             uow.Commit();
         }

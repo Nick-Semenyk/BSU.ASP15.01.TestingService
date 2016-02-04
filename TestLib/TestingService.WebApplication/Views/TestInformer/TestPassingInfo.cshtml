@@ -1,0 +1,77 @@
+﻿@using TestingService.WebApplication.Helpers
+@using TestingService.WebApplication.Models
+@using TestingService.WebApplication.Models.Pages
+@model TestingService.BLL.Interface.Entities.UsersTestsEntity
+@{
+    ViewBag.Title = "Test result " + ViewBag.TestName;
+    string username = ViewBag.Username;
+    string testName = ViewBag.TestName;
+    UsersAnswersPageViewModel pageViewModel = ViewBag.Page;
+    int j = 0;
+}
+<ul class="list-none">
+    <li><b>Test:</b> @Html.ActionLink(testName, "TestInfo", "TestInformer", new {id = Model.TestId}, null)</li>
+    @if (Model.UserId != 0)
+    {
+        <li><b>User:</b> @Html.ActionLink(username, "ShowProfile", "Account", new {id = Model.UserId}, null)</li>
+    }
+    <li><b>Count of existing answers:</b> @Model.RightAnswersCount</li>
+    <li><b>Start time:</b> @Model.BeginningTime</li>
+    <li><b>End time:</b> @(Model.EndingTime?.ToString() ?? "Not finished")</li>
+    <li><b>Mark for test:</b> @Model.MarkForTest</li>
+</ul>
+<p>Answers:</p>
+    @for (int i = 0; i < pageViewModel.Answer.Items.Count; i++)
+    {
+        switch (pageViewModel.Answer.Items[i].ItemType)
+        {
+            case DisplayType.Text:
+                <p>@ViewBag.Question.Items[i].Value</p>
+                break;
+            case DisplayType.CheckBox:
+                <p>
+                    @ViewBag.Question.Items[i].Value
+                    @{
+                        if (pageViewModel.Answer.Items[j].BoolValue)
+                        {
+                            <input type="checkbox" name="@i" id="@i" checked disabled/>
+                        }
+                        else
+                        {
+                            <input type="checkbox" name="@i" id="@i" disabled/>
+                        }
+                        j++;
+                    }
+                </p>
+                break;
+            case DisplayType.RadioButton:
+                <p>
+                    @ViewBag.Question.Items[i].Value
+                    @{
+                        if (pageViewModel.Answer.Items[j].BoolValue)
+                        {
+                            <input type="radio" name="@i" id="@i" checked disabled/>
+                        }
+                        else
+                        {
+                            <input type="radio" name="@i" id="@i" disabled/>
+                        }
+                        j++;
+                    }
+                </p>
+                break;
+            case DisplayType.TextBox:
+                <p>
+                    @ViewBag.Question.Items[i].Value <input type="text" name="@i" id="@i" value="@pageViewModel.Answer.Items[j].Value" disabled/>
+                    @{ j++;}
+                </p>
+                break;
+        }
+    }
+    <hr />
+<div class="btn-group">
+    @Html.PageLinks(pageViewModel.PageInfo, x => Url.Action("TestPassingInfo", new { id = Model.Id, page = x }))
+</div>
+
+
+

@@ -8,7 +8,7 @@
     @foreach (TestEntity t in ViewBag.Tests)
     {
         <li>
-            @Html.ActionLink(t.Name, "TestInfo", "TestsManager", new { testId = t.Id }, null)
+            @Html.ActionLink(t.Name, "TestInfo", "TestInformer", new { id = t.Id }, null)
             |
             @Html.ActionLink("Edit", "EditTest", "TestsManager", new { testId = t.Id }, null)
             |

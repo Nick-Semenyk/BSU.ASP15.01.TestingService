@@ -59,7 +59,7 @@ namespace TestingService.BLL.Services
 
         public IEnumerable<TestEntity> SearchByString(string key)
         {
-            return testRepository.SearchByString(key).Select(test => test.ToBllTest());
+            return testRepository.SearchByString(key).Select(test => test.ToBllTest()).ToList();
         }
 
         public IEnumerable<TestEntity> GetByName(string name)

@@ -47,6 +47,8 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             var role = context.Set<Roles>().FirstOrDefault(r => r.id == key);
+            if (role == null)
+                return null;
             return new DalRole()
             {
                 Id = role.id,

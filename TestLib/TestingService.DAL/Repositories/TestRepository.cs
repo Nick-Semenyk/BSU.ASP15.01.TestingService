@@ -63,6 +63,8 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             var test = context.Set<Tests>().FirstOrDefault(t => t.id == key);
+            if (test == null)
+                return null;
             return new DalTest()
             {
                 Id = test.id,
@@ -303,7 +305,9 @@ namespace TestingService.DAL.Repositories
             if (context.Database.Connection.State != ConnectionState.Open)
                 context.Database.Connection.Open();
             Users ormuser = context.Set<Users>().FirstOrDefault(users => users.id == user.Id);
-            return context.Set<Tests>().Any(t => t.AllowedUsers.Contains(ormuser) && t.id == test.Id);
+            Tests ormtest = context.Set<Tests>().FirstOrDefault(tests => tests.id == test.Id);
+            return ormtest.AllowedUsers.Contains(ormuser);
+        //    return context.Set<Tests>().Any(t => t.AllowedUsers.Contains(ormuser)) && t.id == test.Id);
         }
 
         public void SetCoauthor(DalUser user, DalTest test)
