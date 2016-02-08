@@ -282,6 +282,8 @@
     <Content Include="Views\TestInformer\TestInfo.cshtml" />
     <Content Include="Views\TestPassing\Index.cshtml" />
     <Content Include="Views\TestInformer\TestPassingInfo.cshtml" />
+    <Content Include="Views\TestInformer\_PassingInfoPage.cshtml" />
+    <Content Include="Views\TestInformer\TestResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

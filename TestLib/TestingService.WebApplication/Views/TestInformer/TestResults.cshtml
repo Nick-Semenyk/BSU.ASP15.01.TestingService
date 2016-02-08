@@ -1,0 +1,13 @@
+﻿@using TestingService.BLL.Interface.Entities
+@model IEnumerable<TestingService.BLL.Interface.Entities.UsersTestsEntity>
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Results:</h2>
+
+@foreach(UsersTestsEntity e in Model)
+{
+    <p>@Html.ActionLink(e.BeginningTime.ToString(), "TestPassingInfo", "TestInformer", new {id = e.Id}, null)</p>
+}
+

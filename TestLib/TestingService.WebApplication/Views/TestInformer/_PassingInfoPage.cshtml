@@ -1,0 +1,51 @@
+﻿@using TestingService.WebApplication.Models
+@model TestingService.WebApplication.Models.Pages.UsersAnswersPageViewModel
+@{ int j = 0;}
+
+@for (int i = 0; i < ViewContext.Controller.ViewBag.Question.Items.Count; i++)
+{
+    switch ((DisplayType)ViewContext.Controller.ViewBag.Question.Items[i].ItemType)
+    {
+        case DisplayType.Text:
+            <p>@ViewContext.Controller.ViewBag.Question.Items[i].Value</p>
+            break;
+        case DisplayType.CheckBox:
+            <p>
+                @ViewContext.Controller.ViewBag.Question.Items[i].Value
+                @{
+                    if (Model.Answer.Items[j].BoolValue)
+                    {
+                        <input type="checkbox" name="@i" id="@i" checked disabled />
+                    }
+                    else
+                    {
+                        <input type="checkbox" name="@i" id="@i" disabled />
+                    }
+                    j++;
+                }
+            </p>
+            break;
+        case DisplayType.RadioButton:
+            <p>
+                @ViewContext.Controller.ViewBag.Question.Items[i].Value
+                @{
+                    if (Model.Answer.Items[j].BoolValue)
+                    {
+                        <input type="radio" name="@i" id="@i" checked disabled />
+                    }
+                    else
+                    {
+                        <input type="radio" name="@i" id="@i" disabled />
+                    }
+                    j++;
+                }
+            </p>
+            break;
+        case DisplayType.TextBox:
+            <p>
+                @ViewContext.Controller.ViewBag.Question.Items[i].Value <input type="text" name="@i" id="@i" value="@Model.Answer.Items[j].Value" disabled />
+                @{ j++;}
+            </p>
+        break;
+    }
+}

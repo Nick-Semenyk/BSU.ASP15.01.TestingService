@@ -11,6 +11,7 @@
 </head>
 <body>
 <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+@Scripts.Render("~/bundles/jquery")
 <table class="table-general">
     <tr>
         <td class="width-percent20 text-center"><img class="width-percent100" src="/Content/comp.gif"></td>
@@ -23,7 +24,6 @@
     <tr>
         <td class="width-percent20 text-top text-center">
             <h4>Welcome, @(string.IsNullOrEmpty(SessionPersister.Username) ? "Guest" : SessionPersister.Username)!</h4>
-
             @if (string.IsNullOrEmpty(SessionPersister.Username))
             {
                 <p>@Html.ActionLink("Login", "Login", "Account")</p>
@@ -34,14 +34,10 @@
                 <p>@Html.ActionLink("Logout", "Logout", "Account")</p>
                 <p>@Html.ActionLink("Tests", "Index", "TestsManager")</p>
                 <p>@Html.ActionLink("Create new test", "NewTest", "TestsManager")</p>
+                <p>@Html.ActionLink("Test results", "TestResults", "TestInformer")</p>
             }
             <p>@Html.ActionLink("Home", "Index", "Home")</p>
             <p>@Html.ActionLink("Search", "Index", "Search")</p>
-            @if (SessionPersister.IsInRole("admin"))
-            {
-                <p>@Html.ActionLink("Admin functions", "Index", "AddInformation")</p>
-                <p>@Html.ActionLink("Users list", "ViewProfile", "Account")</p>
-            }
         </td>
         <td class="text-top">@RenderBody()</td>
     </tr>

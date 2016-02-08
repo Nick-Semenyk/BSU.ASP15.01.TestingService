@@ -103,7 +103,7 @@
     <Key>
       <PropertyRef Name="id" />
     </Key>
-    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TestId" Type="int" Nullable="false" />
     <Property Name="UserId" Type="int" Nullable="false" />
     <Property Name="BeginningTime" Type="datetime" Nullable="false" />

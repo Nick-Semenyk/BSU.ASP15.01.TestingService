@@ -138,7 +138,6 @@ namespace TestingService.WebApplication.Controllers
             questionService.CreateQuestion(qvm.ToBllQuestion());
             qvm = questionService.GetAllTestQuestions(e).Select(entity => entity.ToMvcQuestion()).OrderByDescending(model => model.QuestionNumber).First();
             return RedirectToAction("EditQuestion", new {questionId = qvm.Id});
-            return View(qvm);
         }
 
         [HttpPost]
@@ -330,13 +329,11 @@ namespace TestingService.WebApplication.Controllers
                     case DisplayType.Text:
                         break;
                     case DisplayType.CheckBox:
-                        if (post[i.ToString()] != null)
-                            a.Items[j].Value = "true";
+                        a.Items[j].Value = post[i.ToString()] != null ? "true" : "false";
                         j++;
                         break;
                     case DisplayType.RadioButton:
-                        if (post[i.ToString()] != null)
-                            a.Items[j].Value = "true";
+                        a.Items[j].Value = post[i.ToString()] != null ? "true" : "false";
                         j++;
                         break;
                     case DisplayType.TextBox:
@@ -348,6 +345,23 @@ namespace TestingService.WebApplication.Controllers
             answerService.UpdateAnswer(a.ToBllAnswer());
             ViewBag.Question = questionService.GetById(a.QuestionId).ToMvcQuestion();
             return View(a);
+        }
+
+        public ActionResult DeleteAnswer(int? answerId)
+        {
+            if (answerId == null)
+            {
+                ViewBag.Error = "Required answerId field is missing";
+                return View("Error");
+            }
+            AnswerViewModel answer = answerService.GetAnswerEntity(answerId.Value).ToMvcAnswer();
+            if (answer == null)
+            {
+                ViewBag.Error = "Answer with such id doesn't exist";
+                return View("Error");
+            }
+            answerService.DeleteAnswer(answer.ToBllAnswer());
+            return RedirectToAction("EditQuestion", new {questionId = answer.QuestionId});
         }
 
         private bool IsTestReady(TestViewModel test)

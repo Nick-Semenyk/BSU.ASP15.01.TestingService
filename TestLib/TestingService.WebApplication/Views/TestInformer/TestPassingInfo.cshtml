@@ -21,57 +21,25 @@
     <li><b>Mark for test:</b> @Model.MarkForTest</li>
 </ul>
 <p>Answers:</p>
-    @for (int i = 0; i < pageViewModel.Answer.Items.Count; i++)
-    {
-        switch (pageViewModel.Answer.Items[i].ItemType)
-        {
-            case DisplayType.Text:
-                <p>@ViewBag.Question.Items[i].Value</p>
-                break;
-            case DisplayType.CheckBox:
-                <p>
-                    @ViewBag.Question.Items[i].Value
-                    @{
-                        if (pageViewModel.Answer.Items[j].BoolValue)
-                        {
-                            <input type="checkbox" name="@i" id="@i" checked disabled/>
-                        }
-                        else
-                        {
-                            <input type="checkbox" name="@i" id="@i" disabled/>
-                        }
-                        j++;
-                    }
-                </p>
-                break;
-            case DisplayType.RadioButton:
-                <p>
-                    @ViewBag.Question.Items[i].Value
-                    @{
-                        if (pageViewModel.Answer.Items[j].BoolValue)
-                        {
-                            <input type="radio" name="@i" id="@i" checked disabled/>
-                        }
-                        else
-                        {
-                            <input type="radio" name="@i" id="@i" disabled/>
-                        }
-                        j++;
-                    }
-                </p>
-                break;
-            case DisplayType.TextBox:
-                <p>
-                    @ViewBag.Question.Items[i].Value <input type="text" name="@i" id="@i" value="@pageViewModel.Answer.Items[j].Value" disabled/>
-                    @{ j++;}
-                </p>
-                break;
-        }
-    }
-    <hr />
+<div id="answers">
+    @Html.Partial("_PassingInfoPage", pageViewModel)
+</div>
+<hr />
 <div class="btn-group">
-    @Html.PageLinks(pageViewModel.PageInfo, x => Url.Action("TestPassingInfo", new { id = Model.Id, page = x }))
+    @Html.PageLinks(pageViewModel.PageInfo, x => Url.Action("TestPassingInfo", new { id = Model.Id, page = x}), false)
 </div>
 
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        $('a').click(function (event) {
+            var elem = $( this );
+            if (elem.attr("href").indexOf('TestPassingInfo') + 1) {
+                event.preventDefault();
+                var url = $(this).attr('href');
+                $('#answers').load(url);
+            }
+        });
+    });
 
-
+</script>
